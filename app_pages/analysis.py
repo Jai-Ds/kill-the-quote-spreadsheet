@@ -24,6 +24,7 @@ if view == "Price table":
         ok = int((q["comparable"] == True).sum())   # noqa: E712
         ui.title("Landed rupees per spec kg", "Like-for-like price comparison", ui.badge(f"{ok} comparable quotes", "good"))
         ui.note(f"After discount, duty, freight, FX (Rs {rate}, {d}) and strength. Click a price to see how it was built.")
+        ui.note("Assumption: if a vendor gives one price and doesn't mention freight or GST, we treat it as the total price, including both.")
         grid = q.assign(c=q.apply(cell, axis=1)).pivot(index=["rm_code", "material"], columns="vendor", values="c").fillna("").reset_index().rename(columns={**short, "rm_code": "SKU", "material": "Material"})
         ev = st.dataframe(grid, hide_index=True, height="content", on_select="rerun", selection_mode="single-cell", key="price", alt="Price comparison")
         cells = ev.selection.cells

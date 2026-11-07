@@ -206,6 +206,7 @@ From a live run on routed models, on the five first replies.
 
 ## Known limits
 
+- **Price assumption.** If a vendor gives one price and doesn't mention freight or GST, we assume it is the total price, including both. Where a vendor states freight as extra, it is added. GST is never added or removed, so a price marked ex GST can sit beside one assumed to include it. Confirming the price basis with vendors is on the roadmap.
 - **Critical known bias against new vendors.** New vendors have no history with us, so their OTIF and defect claims can't be checked and their evidence is usually Low. Evidence is 30% of the total, so existing vendors gain an advantage that says nothing about real quality. Roadmap: a separate new-vendor path that accepts references, trial orders and third-party audits, and judges evidence against what a new vendor could reasonably provide.
 - Questionnaire answers are stored per vendor, not per line.
 - The attribute-to-question mapping, rating points and evidence weights are design choices, set in code.
