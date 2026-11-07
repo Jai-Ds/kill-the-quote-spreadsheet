@@ -46,7 +46,7 @@ with ui.card("coverage"):
                     out += f'<div class="cell {tone}" title="{ui.esc(r["topic"])}: {word}">{c}</div>'
                 else:
                     out += f'<div class="cell na" title="{ui.esc(r["topic"])}: does not apply">-</div>'
-        st.html(f'<div class="heat">{out}</div>')
+        st.html(f'<div class="heat-wrap"><div class="heat">{out}</div></div>')
         ui.note("Hover over a square to see the question. Open a vendor in the inbox to read what they said.")
 
 ui.next_step("Ask the analyst about the quotes", "app_pages/analysis.py")

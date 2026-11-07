@@ -288,7 +288,7 @@ def table(headers, rows):
     """A read-only table. Cells are HTML, so they can hold badges and vendor dots."""
     head = "".join(f"<th>{esc(h)}</th>" for h in headers)
     body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows)
-    st.html(f'<table class="tbl"><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>')
+    st.html(f'<div class="tbl-wrap"><table class="tbl"><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>')
 
 
 def vendor_cell(v, full=False):

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import streamlit as st
 
-st.set_page_config(page_title="Kill the Quote Spreadsheet", page_icon=":material/fact_check:", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="Kill the Quote Spreadsheet", page_icon=":material/fact_check:", layout="wide", initial_sidebar_state="auto")
 
 
 def secret(name):
@@ -80,4 +80,17 @@ with st.sidebar:
     ui.live()
     ui.spend_panel()
     st.caption("All company and vendor data is fictional.")
+st.html("""<script>
+if (!window.kqMenu) {
+  window.kqMenu = true;
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768 && e.target.closest('[data-testid="stSidebar"] a')) {
+      setTimeout(() => {
+        const c = document.querySelector('[data-testid="stSidebarCollapseButton"] button') || document.querySelector('[data-testid="stSidebarCollapseButton"]');
+        if (c) c.click();
+      }, 400);
+    }
+  }, true);
+}
+</script>""", unsafe_allow_javascript=True)     # on a phone, close the menu after tapping a page
 nav.run()
