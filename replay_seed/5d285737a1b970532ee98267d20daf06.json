@@ -1,0 +1,1 @@
+{"content": [{"id": "toolu_01NLxyR9cxtqukPbBBn7puX8", "input": {}, "name": "get_recorded_answers", "type": "tool_use", "caller": {"type": "direct"}}, {"id": "toolu_01RHu3CBRax3TFRJ2rFpB7F9", "input": {}, "name": "list_files", "type": "tool_use", "caller": {"type": "direct"}}], "stop_reason": "tool_use"}

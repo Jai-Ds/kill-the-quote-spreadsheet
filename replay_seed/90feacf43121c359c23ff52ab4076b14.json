@@ -1,0 +1,1 @@
+{"content": [{"text": "Everything matches the source. The record keeps the price conditions and flags the uncertain items instead of resolving them.", "type": "text"}, {"id": "toolu_01FLqzcC9txJGMmoT2eDBvDj", "input": {"verdict": "pass", "problems": []}, "name": "submit_review", "type": "tool_use", "caller": {"type": "direct"}}], "stop_reason": "tool_use"}

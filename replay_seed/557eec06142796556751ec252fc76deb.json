@@ -1,0 +1,1 @@
+{"content": [{"id": "toolu_0155xcW75GSNnx9w4KJBpjDc", "input": {}, "name": "get_data_dictionary", "type": "tool_use", "caller": {"type": "direct"}}], "stop_reason": "tool_use"}

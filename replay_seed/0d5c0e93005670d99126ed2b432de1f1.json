@@ -1,0 +1,1 @@
+{"content": [{"id": "toolu_016V1TzWuSxaskn7S5yK88Ho", "input": {"file": "COA_Nilagiri_Rosemary.pdf", "offset": null}, "name": "read_attachment", "type": "tool_use", "caller": {"type": "direct"}}], "stop_reason": "tool_use"}

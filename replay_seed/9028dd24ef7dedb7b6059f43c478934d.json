@@ -1,0 +1,1 @@
+{"content": [{"id": "toolu_01ULxp3dB5uZChJSphUPLwFu", "input": {}, "name": "get_documents_to_check", "type": "tool_use", "caller": {"type": "direct"}}], "stop_reason": "tool_use"}

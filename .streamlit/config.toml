@@ -1,0 +1,27 @@
+[theme]
+primaryColor = "#1b5745"
+base = "light"
+backgroundColor = "#f7f8f6"
+secondaryBackgroundColor = "#f4f6f4"
+textColor = "#17211d"
+borderColor = "#dfe5e1"
+baseRadius = "8px"
+font = "DM Sans:https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+headingFont = "Manrope:https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&display=swap"
+
+[theme.sidebar]
+backgroundColor = "#173b31"
+secondaryBackgroundColor = "#21493d"
+textColor = "#e8f1ed"
+primaryColor = "#d8f062"
+borderColor = "#315047"
+
+[browser]
+gatherUsageStats = false
+
+[server]
+port = 8501
+address = "localhost"
+
+[client]
+toolbarMode = "minimal"

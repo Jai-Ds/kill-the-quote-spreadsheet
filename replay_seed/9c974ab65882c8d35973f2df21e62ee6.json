@@ -1,0 +1,1 @@
+{"content": [{"text": "The message text differs from the stored quotes, so I'll read the PDF.", "type": "text"}, {"id": "toolu_01TmujbuxL2cTPx1Mg4qiQ4b", "input": {"file": "COA_Nilagiri_Rosemary.pdf", "offset": null}, "name": "read_attachment", "type": "tool_use", "caller": {"type": "direct"}}], "stop_reason": "tool_use"}
