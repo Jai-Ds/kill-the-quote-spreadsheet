@@ -101,10 +101,10 @@ if level == "By SKU":
                 line = {"Vendor": short[r["vendor"]]}
                 for k, col in SCORE.items():
                     x = att.loc[(r["vendor"], k)]
-                    line[k] = s10(r[col]) if show == "Scores" else A.fact(k, r, x)
-                why_not = ", ".join(r["knockouts"]) or ("Answers pending" if not r["comparable"] else "")
+                    line[k] = ("Pending" if k in ("Cost", "Inventory") and not r["comparable"] else s10(r[col])) if show == "Scores" else A.fact(k, r, x)
+                why_not = ", ".join(r["knockouts"]) or (A.missing(r) if not r["comparable"] else "")
                 line["Evidence"] = F.item_level(r["vendor"], code)
-                line["Total"] = s10(r["sku_score"]) if good else "Failed"
+                line["Total"] = s10(r["sku_score"]) if good else "Failed" if r["knockouts"] else "Pending"
                 line["Note"] = "Best" if good and rank == 1 else why_not
                 rows.append(line)
                 meta.append(r)

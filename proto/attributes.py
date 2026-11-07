@@ -239,8 +239,20 @@ def best_vendor(q, code, template, templates):
     return (g.iloc[0]["vendor"], float(g.iloc[0]["sku_score"])) if len(g) else (None, None)
 
 
+def missing(r):
+    """What is stopping an item from being priced, in a few words."""
+    if r.get("not_enough_data") == True:   # noqa: E712
+        return "Not enough data"
+    words = [ASK_TEXT.get(i["code"], "an answer") for i in r["issues"] if i["level"] == "block" and i["action"] == "Ask"]
+    asks = list(dict.fromkeys(w if w[:2].isupper() else w.lower() for w in words))   # keeps COA and MOQ in capitals
+    return f"Waiting for {' and '.join(asks)}" if asks else "Waiting for an answer"
+
+
 def why(key, r, a):
     """One short explanation of a score, in plain language."""
+    if r.get("comparable") != True and key in ("Cost", "Inventory"):   # noqa: E712
+        ask = " ".join(i["text"] for i in r["issues"] if i["level"] == "block" and i["action"] == "Ask")
+        return f"{ask} This fills in once the vendor answers. Everything else about this vendor is already scored."
     if key == "Cost":
         return " ".join(r["trail"]) or "No conversion was possible yet."
     if key == "Delivery":

@@ -359,6 +359,12 @@ def gap_score(value, best, per_point=5.0):
     return max(0.0, 100 - per_point * 100 * (value - best) / best)
 
 
+def _known_scores(r, att):
+    """The attribute scores that don't depend on the price."""
+    return {"Delivery": None if pd.isna(r["otif"]) else 70 * r["otif"] + 30 * max(0, 1 - r["lt_var"] / 10), "Quality": None if pd.isna(r["defect_rate"]) else max(0, 100 - 1000 * r["defect_rate"]),
+            "Supply risk": att.loc[(r["vendor"], "Supply risk"), "rating_score"], "Compliance": att.loc[(r["vendor"], "Compliance"), "rating_score"]}
+
+
 def score(df, templates=None, force_template=None):
     """Scores each vendor on each SKU, then rolls scores up to the vendor by spend."""
     templates = templates or {k: t["weights"] for k, t in db.latest_templates().items()}
@@ -374,9 +380,7 @@ def score(df, templates=None, force_template=None):
         best_cost, best_inv = g["cost_inr_per_spec_kg"].min(), g["inventory_cost_inr"].min()
         for i, r in g.iterrows():
             w = {k: LEVEL_WEIGHT[x] for k, x in templates[force_template or r["template"]].items()}
-            s = {"Cost": gap_score(r["cost_inr_per_spec_kg"], best_cost), "Inventory": gap_score(r["inventory_cost_inr"], best_inv, 1.5),
-                 "Delivery": None if pd.isna(r["otif"]) else 70 * r["otif"] + 30 * max(0, 1 - r["lt_var"] / 10), "Quality": None if pd.isna(r["defect_rate"]) else max(0, 100 - 1000 * r["defect_rate"]),
-                 "Supply risk": att.loc[(r["vendor"], "Supply risk"), "rating_score"], "Compliance": att.loc[(r["vendor"], "Compliance"), "rating_score"]}
+            s = {"Cost": gap_score(r["cost_inr_per_spec_kg"], best_cost), "Inventory": gap_score(r["inventory_cost_inr"], best_inv, 1.5), **_known_scores(r, att)}
             s = {k: (None if v is None or v != v else v) for k, v in s.items()}
             have = {k: v for k, v in s.items() if v is not None}
             perf = sum(have[k] * w[k] for k in have) / sum(w[k] for k in have)
@@ -388,6 +392,12 @@ def score(df, templates=None, force_template=None):
             q.at[i, "performance"] = perf
             q.at[i, "evidence_share"] = sum(w[k] for k in have) / sum(w.values())
             q.at[i, "sku_score"] = SCORE_MIX["performance"] * perf + SCORE_MIX["evidence"] * EVIDENCE_POINTS[level]
+    # An item we can't price yet still shows what we know. It gets no total, so it stays out of the ranking.
+    for i, r in q[(q["comparable"] != True) & (q["not_quoted"] != True)].iterrows():  # noqa: E712
+        s = _known_scores(r, att)
+        q.at[i, "score_delivery"], q.at[i, "score_quality"] = s["Delivery"], s["Quality"]
+        q.at[i, "score_supply"], q.at[i, "score_compliance"] = s["Supply risk"], s["Compliance"]
+        q.at[i, "evidence_level"] = factcheck.item_level(r["vendor"], r["rm_code"])
     for c in ATTR_COLS:
         q[c] = pd.to_numeric(q[c], errors="coerce")
     q["rank_in_sku"] = q[q["cleared_questionnaire"] == True].groupby("rm_code")["sku_score"].rank(ascending=False, method="min")  # noqa: E712
